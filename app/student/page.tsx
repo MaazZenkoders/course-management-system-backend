@@ -1,9 +1,15 @@
 "use client"
 import React from 'react'
+import StudentCourses from './courses/page'
+import Layout from './layout'
 
-const Student = () => {
+const Student : React.FC = () => {
   return (
-    <div>Student</div>
+    <div>
+      <Layout>
+          <StudentCourses/>
+      </Layout>
+    </div>
   )
 }
 

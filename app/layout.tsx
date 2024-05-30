@@ -17,9 +17,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-theme = "winter">
-      <body className={inter.className}>
+      <body className={inter.className} >
         {children}
-        <Footer/>
         </body>
     </html>
   );

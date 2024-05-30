@@ -1,19 +1,24 @@
 import React, { ReactNode } from 'react';
 import StudentNavbar from './components/studentNavbar';
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 interface layoutProps {
   children: ReactNode;
 }
 
-const layout: React.FC<layoutProps> = ({ children }) => {
+const Layout: React.FC<layoutProps> = ({ children }) => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <html lang="en" data-theme = "winter">
+    <body className={inter.className}>
       <StudentNavbar />
       <main className="flex-grow">
         {children}
       </main>
-    </div>
+    </body>
+    </html>
   );
 };
 
-export default layout;
+export default Layout;
