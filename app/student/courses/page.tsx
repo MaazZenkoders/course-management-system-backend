@@ -1,5 +1,6 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import {useCourseContext} from '../../context/coursecontext'
 
 interface Course {
   course_id: number;
@@ -8,42 +9,27 @@ interface Course {
 }
 
 const StudentCourses: React.FC = () => {
-  const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const { courses, loading, error } = useCourseContext();
   const [student_id, setstudent_id] = useState("");
   const [course_id, setcourse_id] = useState("");
   const [showModal, setShowModal] = useState(false);
 
-  useEffect(() => {
-    fetch("http://localhost:4000/api/course/getAll")
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        if (data.courses && Array.isArray(data.courses)) {
-          setCourses(data.courses);
-        } else {
-          throw new Error("Data is not an array");
-        }
-        setLoading(false);
-      })
-      .catch((error) => {
-        console.error("Error fetching courses:", error);
-        setError(error.message);
-        setLoading(false);
-      });
-  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
 
   const enrollmentData = {
     student_id,
     course_id,
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
     try {
       const response = await fetch(
         "http://localhost:4000/api/enrollment/create",
@@ -59,13 +45,18 @@ const StudentCourses: React.FC = () => {
       if (!response.ok) {
         throw new Error("Enrollment failed");
       }
+
+      const responseData = await response.json()
+      console.log(responseData)
+      setShowModal(false)
+      alert("Enrolled successfully")
     } catch (error) {
       console.error("Error while enrolling.");
     }
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-8 p-4">
+    <div className="max-w-4xl mx-auto mt-8 p-4 mb-4">
       <h1 className="text-3xl font-bold text-center mb-4">OUR COURSES</h1>
       <p className="text-lg text-center mb-6">
         Explore a variety of courses we offer to enhance your skills and
@@ -121,7 +112,7 @@ const StudentCourses: React.FC = () => {
                   onChange={(e) => setcourse_id(e.target.value)}
                 />
               </div>
-              <button type="submit" className="btn btn-primary">
+              <button type="submit" className="btn btn-primary" >
                 Enroll
               </button>
             </form>

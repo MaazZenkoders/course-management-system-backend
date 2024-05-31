@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react';
-import StudentNavbar from './components/studentNavbar';
 import { Inter } from "next/font/google";
+import TeacherNavbar from './components/teacherNavbar';
 import Footer from '../components/footer';
 
 const inter = Inter({ subsets: ["latin"] });
@@ -13,7 +13,7 @@ const Layout: React.FC<layoutProps> = ({ children }) => {
   return (
     <html lang="en" data-theme = "winter">
     <body className={inter.className}>
-      <StudentNavbar />
+        <TeacherNavbar/>
       <main className="flex-grow">
         {children}
       </main>
