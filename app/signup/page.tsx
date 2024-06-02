@@ -5,9 +5,17 @@ const SignUpForm: React.FC = () => {
   const [name, setname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [role, setRole] = useState<"Teacher" | "Student" | null>(null);
+  const [role, setRole] = useState("admin");
   const [token, setToken] = useState<string | null>(null);
-  const [isAdmin, setIsAdmin] = useState<number | undefined>();
+
+  const handleDisplay = (name: string) => {
+    setRole(name);
+    if (name === "Teacher") {
+      setRole("admin");
+    } else {
+      setRole("student");
+    }
+  };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -16,7 +24,7 @@ const SignUpForm: React.FC = () => {
       name,
       email,
       password,
-      isAdmin,
+      role,
     };
 
     try {
@@ -32,11 +40,12 @@ const SignUpForm: React.FC = () => {
         throw new Error("Signup failed");
       }
 
+      localStorage.setItem("role", role);
       const responseData = await response.json();
-      const jwtToken = responseData.token;
-      setToken(jwtToken);
+      const token = responseData.token;
+      localStorage.setItem("token", token);
       console.log(responseData);
-      if (role === "Teacher") {
+      if (role === "admin") {
         window.location.href = "/teacher";
       } else {
         window.location.href = "/student";
@@ -57,17 +66,17 @@ const SignUpForm: React.FC = () => {
           <div className="flex justify-around mb-4">
             <button
               className={`py-2 px-4 rounded ${
-                role === "Teacher" ? "bg-blue-600 text-white" : "bg-gray-200"
+                role === "admin" ? "bg-blue-600 text-white" : "bg-gray-200"
               }`}
-              onClick={() => setRole("Teacher")}
+              onClick={() => handleDisplay("Teacher")}
             >
               Teacher
             </button>
             <button
               className={`py-2 px-4 rounded ${
-                role === "Student" ? "bg-blue-600 text-white" : "bg-gray-200"
+                role === "student" ? "bg-blue-600 text-white" : "bg-gray-200"
               }`}
-              onClick={() => setRole("Student")}
+              onClick={() => handleDisplay("Student")}
             >
               Student
             </button>
@@ -108,21 +117,6 @@ const SignUpForm: React.FC = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              required
-            />
-          </div>
-
-          <div className="mb-4">
-            <input
-              type="text"
-              className="w-full py-2 px-4 border rounded"
-              placeholder="isAdmin"
-              value={isAdmin}
-              onChange={(e) =>
-                setIsAdmin(
-                  e.target.value ? parseInt(e.target.value, 10) : undefined
-                )
-              }
               required
             />
           </div>
