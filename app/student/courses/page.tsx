@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import {useCourseContext} from '../../context/coursecontext'
+import { useCourseContext } from "../../context/coursecontext";
 
 interface Course {
   course_id: number;
@@ -10,10 +10,9 @@ interface Course {
 
 const StudentCourses: React.FC = () => {
   const { courses, loading, error } = useCourseContext();
-  const [student_id, setstudent_id] = useState("");
-  const [course_id, setcourse_id] = useState("");
+  const [student_id, setstudent_id] = useState<number | undefined>();
+  const [course_id, setcourse_id] = useState<number | undefined>();
   const [showModal, setShowModal] = useState(false);
-
 
   if (loading) {
     return <p>Loading...</p>;
@@ -29,7 +28,7 @@ const StudentCourses: React.FC = () => {
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+    event.preventDefault();
     try {
       const response = await fetch(
         "http://localhost:4000/api/enrollment/create",
@@ -46,10 +45,10 @@ const StudentCourses: React.FC = () => {
         throw new Error("Enrollment failed");
       }
 
-      const responseData = await response.json()
-      console.log(responseData)
-      setShowModal(false)
-      alert("Enrolled successfully")
+      const responseData = await response.json();
+      console.log(responseData);
+      setShowModal(false);
+      alert("Enrolled successfully");
     } catch (error) {
       console.error("Error while enrolling.");
     }
@@ -94,8 +93,13 @@ const StudentCourses: React.FC = () => {
                 <input
                   type="text"
                   id="studentId"
+                  value={student_id}
                   className="input border"
-                  onChange={(e) => setstudent_id(e.target.value)}
+                  onChange={(e) =>
+                    setstudent_id(
+                      e.target.value ? parseInt(e.target.value, 10) : undefined
+                    )
+                  }
                 />
               </div>
               <div className="mb-4">
@@ -108,11 +112,16 @@ const StudentCourses: React.FC = () => {
                 <input
                   type="text"
                   id="courseId"
+                  value={course_id}
                   className="input border"
-                  onChange={(e) => setcourse_id(e.target.value)}
+                  onChange={(e) =>
+                    setcourse_id(
+                      e.target.value ? parseInt(e.target.value, 10) : undefined
+                    )
+                  }
                 />
               </div>
-              <button type="submit" className="btn btn-primary" >
+              <button type="submit" className="btn btn-primary">
                 Enroll
               </button>
             </form>
