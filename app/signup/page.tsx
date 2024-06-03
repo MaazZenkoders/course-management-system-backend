@@ -1,4 +1,5 @@
 "use client";
+import { setCookie } from "cookies-next";
 import React, { useState } from "react";
 
 const SignUpForm: React.FC = () => {
@@ -6,7 +7,6 @@ const SignUpForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("admin");
-  const [token, setToken] = useState<string | null>(null);
 
   const handleDisplay = (name: string) => {
     setRole(name);
@@ -40,10 +40,11 @@ const SignUpForm: React.FC = () => {
         throw new Error("Signup failed");
       }
 
-      localStorage.setItem("role", role);
+      setCookie('role',role)
       const responseData = await response.json();
-      const token = responseData.token;
-      localStorage.setItem("token", token);
+      const accessToken = responseData.token;
+      console.log(accessToken)
+      setCookie("accessToken" , accessToken)
       console.log(responseData);
       if (role === "admin") {
         window.location.href = "/teacher";

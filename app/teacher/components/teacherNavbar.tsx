@@ -1,9 +1,13 @@
 "use client";
+
+import { deleteCookie } from "cookies-next";
+
+
 const TeacherNavbar: React.FC = () => {
   const handleLogout = async () => {
+    deleteCookie("accessToken")
     window.location.href = "/login";
   };
-
   return (
     <nav className="bg-blue-300 py-1 px-4 flex justify-between items-center h-12">
       <h1 className="text-lg font-semibold text-black">TEACHER DASHBOARD</h1>

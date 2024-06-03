@@ -33,7 +33,7 @@ const TeacherCourses = () => {
       if (!response.ok) {
         throw new Error("Creation failed");
       }
-
+      
       setShowCreateModal(false);
       const responseData = await response.json();
       console.log(responseData);
@@ -83,11 +83,14 @@ const TeacherCourses = () => {
         }
       );
 
+      console.log(response)
       if (!response.ok) {
         throw new Error("Deletion failed");
       }
+     
       const responseData = await response.json();
       console.log(responseData);
+      
       alert("Course deleted successfully");
       setShowDeleteModal(false);
     } catch (error) {

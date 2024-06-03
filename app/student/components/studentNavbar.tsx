@@ -1,8 +1,12 @@
 "use client";
+import { deleteCookie } from "cookies-next";
 import React, { useEffect, useState } from "react";
+
+
 
 const StudentNavbar: React.FC = () => {
   const handleLogout = async () => {
+    deleteCookie("accessToken")
     window.location.href = "/login";
   };
 

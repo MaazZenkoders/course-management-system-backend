@@ -1,10 +1,10 @@
 "use client";
+import { setCookie } from "cookies-next";
 import React, { useState } from "react";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [token, setToken] = useState<string | null>(null);
   const [role, setRole] = useState("admin");
 
   const handleDisplay = (name: string) => {
@@ -38,10 +38,10 @@ const LoginForm: React.FC = () => {
         throw new Error("Login failed");
       }
 
-      localStorage.setItem("role", role);
+      setCookie('role',role)
       const responseData = await response.json();
-      const token = responseData.token;
-      localStorage.setItem("token", token);
+      const accessToken = responseData.token;
+      setCookie("accessToken" , accessToken)
       console.log(responseData);
       if (role === "Teacher") {
         window.location.href = "/teacher";
