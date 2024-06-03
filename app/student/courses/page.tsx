@@ -94,7 +94,7 @@ const StudentCourses: React.FC = () => {
                   type="text"
                   id="studentId"
                   value={student_id}
-                  className="input border"
+                  className="input border border-black"
                   onChange={(e) =>
                     setstudent_id(
                       e.target.value ? parseInt(e.target.value, 10) : undefined
@@ -113,7 +113,7 @@ const StudentCourses: React.FC = () => {
                   type="text"
                   id="courseId"
                   value={course_id}
-                  className="input border"
+                  className="input border border-black"
                   onChange={(e) =>
                     setcourse_id(
                       e.target.value ? parseInt(e.target.value, 10) : undefined
